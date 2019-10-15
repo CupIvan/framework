@@ -7,7 +7,7 @@
 spl_autoload_register(function($class_name) {
 	if ($class_name == 'autoload')
 	{
-		$fname = 'vendor/Framework/autoload.class.php';
+		$fname = 'src/autoload.class.php';
 		if (!file_exists($fname))
 		{
 			@mkdir(dirname($fname), 0755, true);

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Подгрузка шаблонов
+ * @author CupIvan <mail@cupivan.ru>
+ * @date   2019-10-15
+ */
 class template
 {
 	public static function load($fname = '')

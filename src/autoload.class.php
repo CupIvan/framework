@@ -6,7 +6,7 @@ class autoload
 	public static function search($class_name)
 	{
 		if (!self::load_local($class_name))
-		if (self::download("vendor/Framework/$class_name.class.php"))
+		if (self::download("src/$class_name.class.php"))
 			self::load_local($class_name);
 	}
 	/** скачивание файла из репозитория github */
@@ -24,7 +24,7 @@ class autoload
 	/** автоподгрузка из локальной папки */
 	private static function load_local($class_name)
 	{
-		if (!file_exists($x="./vendor/Framework/$class_name.class.php")) return false;
+		if (!file_exists($x="./src/$class_name.class.php")) return false;
 		require_once $x;
 		return true;
 	}
