@@ -6,14 +6,19 @@
  */
 class template
 {
+	public static $base = '.';
+
 	public static function load($fname = '')
 	{
 		if (!$fname) $fname = 'index';
 		if (!strpos($fname, '.tpl')) $fname .= '.tpl';
 
-		if ($fname == 'index.tpl' && !file_exists($x="tpl/$fname"))
-			autoload::download($x);
+		$x = $x=self::$base."/tpl/$fname";
+		if ($fname == 'index.tpl' && !file_exists($x))
+			autoload::download("/tpl/$fname");
 
-		@include "tpl/$fname";
+		@include $x;
 	}
 }
+
+template::$base = getcwd();

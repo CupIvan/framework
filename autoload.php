@@ -4,6 +4,8 @@
  * @date 2019-10-14
  */
 
+$GLOBALS['TIME_START'] = microtime(true);
+
 spl_autoload_register(function($class_name) {
 	if ($class_name == 'autoload')
 	{
