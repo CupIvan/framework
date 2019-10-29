@@ -18,6 +18,7 @@ class site
 			}
 			self::redirect(request::$referer);
 		}
+		template::load('index');
 	}
 	public static function redirect($url = '')
 	{

@@ -17,7 +17,7 @@ class debug
 
 	public static function show()
 	{
-		self::$info['session']  = $_SESSION;
+		self::$info['session']  = $_SESSION??[];
 		self::$info['request']  = $_REQUEST;
 		self::$info['cookies']  = $_COOKIE;
 		self::$info['server']   = $_SERVER;
@@ -49,7 +49,6 @@ class debug
 	{
 		if (self::$is_init) return;
 		$GLOBALS['g_debug'] = new debug;
-		self::$info['time_start'] = $GLOBALS['TIME_START'] ?? microtime(true);
 		self::$is_init = true;
 	}
 	private static function msg($msg, $type)
@@ -58,3 +57,5 @@ class debug
 		self::$info['log'][] = ['time'=>microtime(true), 'type'=>$type, 'msg'=>$msg];
 	}
 }
+
+debug::$info['time_start'] = $GLOBALS['TIME_START'] ?? microtime(true);

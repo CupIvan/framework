@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Класс для работы с MySQL
+ * @author CupIvan <mail@cupivan.ru>
+ * @date   2019-10-15
+ */
 class mysql
 {
 	public static $host = 'localhost';

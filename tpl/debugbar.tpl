@@ -51,6 +51,7 @@
 	st += '<nav>'
 	if (n=n_log) st += '<a href="#log">Messages'+n+'</a>'
 	if (n=_n(info.print))   st += '<a href="#print">Print'+n+'</a>'
+	if (n_log || n)
 	st += ' | '
 	if (n=_n(info.request)) st += '<a href="#request">$_REQUEST'+n+'</a>'
 	if (n=_n(info.session)) st += '<a href="#session">$_SESSION'+n+'</a>'
@@ -72,6 +73,7 @@
 
 	div.innerHTML = st
 
+	if (!document.body) document.write('<body></body>')
 	document.body.appendChild(div)
 
 	div.querySelector('a[href="#close"]').onclick = function(e){

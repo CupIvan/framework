@@ -18,6 +18,9 @@ class auth
 	{
 		session::set('auth', NULL);
 	}
+	public static function register()
+	{
+	}
 	public static function form_login()
 	{
 		template::load('auth/login');
@@ -25,5 +28,9 @@ class auth
 	public static function form_logout()
 	{
 		template::load('auth/logout');
+	}
+	public static function form_register()
+	{
+		template::load('auth/register');
 	}
 }
