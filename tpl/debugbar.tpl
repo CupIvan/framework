@@ -6,7 +6,7 @@
 	.debugbar a { color: #000; font-weight: bold; text-decoration: none; padding: 5px 10px; display: inline-block; }
 	.debugbar a:hover { background: #FAFAFA; }
 	.debugbar a[href="#close"] { float: right; color: #777; font-size: 24px; font-weight: normal; padding: 0 5px; }
-	.debugbar table { width: 100%; border-collapse: collapse; }
+	.debugbar table { border-collapse: collapse; }
 	.debugbar table td { border: 1px solid #EEE; padding: 5px 10px; }
 	.debugbar table .big td { padding: 0 5px; font-size: 80%; }
 	.debugbar table .big tr:hover > td { background: #FFF !important; }
