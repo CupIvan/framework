@@ -10,9 +10,9 @@ class auth
 	{
 		return session::get('auth', false);
 	}
-	public static function login()
+	public static function login($user = true)
 	{
-		session::set('auth');
+		session::set('auth', $user);
 	}
 	public static function logout()
 	{
