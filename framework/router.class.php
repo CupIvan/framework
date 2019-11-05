@@ -8,13 +8,16 @@ class router
 {
 	private static $is_search = true;
 
-	static public function start()
+	static public function start($pattern = '')
 	{
 		if (!is_dir($dir = 'post')) return false;
 		foreach (scandir($dir) as $fname)
 		if (strpos($fname, '.php') !== false)
-		if (self::$is_search)
+		if (!$pattern || ($pattern && strpos($fname, $pattern) !== false))
+		{
 			require_once "$dir/$fname";
+			if (self::$is_search) break; // COMMENT: если где-то сработал обработчик - остальные пропускаем
+		}
 	}
 	static public function post($url, $handler)
 	{
@@ -25,6 +28,7 @@ class router
 			if (is_null($m)) return false;
 			$handler($m);
 			self::$is_search = false;
+			site::redirect();
 		}
 		return false;
 	}
