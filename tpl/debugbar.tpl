@@ -3,6 +3,7 @@
 		border-top: 2px solid #999; font-family: Monospace; max-height: 400px; overflow: auto; }
 	.debugbar nav { background: #EEE; }
 	.debugbar .noactive { color: #999; }
+	.debugbar .r { text-align: right; }
 	.debugbar a { color: #000; font-weight: bold; text-decoration: none; padding: 5px 10px; display: inline-block; }
 	.debugbar a:hover { background: #FAFAFA; }
 	.debugbar a[href="#close"] { float: right; color: #777; font-size: 24px; font-weight: normal; padding: 0 5px; }
@@ -20,7 +21,7 @@
 	var div = document.createElement('div')
 	div.className = 'debugbar'
 
-	var i, st = ''
+	var i, st = '', openTab = false
 
 	st += '<a href="#close" title="Закрыть">⊗</a>'
 
@@ -46,6 +47,15 @@
 		}
 		return st ? '<table'+(n>10?' class="big"':'')+'>'+st+'</table>' : ''
 	}
+	var _sql = function(x) {
+		var i, t, st='', n = 0
+		for (i in x)
+		{
+			st += '<tr'+(x[i].errno>0?' style="background: #FEE"':'')+'><td class="r">'+(Math.round(x[i].duration*1000)/1000)+'ms</td><td>'+x[i].sql+'<br><i>'+x[i].error+'</i></td></tr>'
+			if (x[i].errno>0) defaultTab = '#sql'
+		}
+		return st ? '<table>'+st+'</table>' : ''
+	}
 
 	var n
 	st += '<nav>'
@@ -57,6 +67,7 @@
 	if (n=_n(info.session)) st += '<a href="#session">$_SESSION'+n+'</a>'
 	if (n=_n(info.cookies)) st += '<a href="#cookies">$_COOKIE'+n+'</a>'
 	if (n=_n(info.server))  st += '<a href="#server">$_SERVER'+n+'</a>'
+	if (n=_n(info.sql))     st += '<a href="#sql">SQL'+n+'</a>'
 	st += ' | '
 	st += ' <i>'+Math.round((info.time_end-info.time_start)*1000*10)/10+'ms</i>'
 	st += ' <i>'+Math.round(info.memory/1024/1024*1000)/1000+'Mb</i>'
@@ -69,6 +80,7 @@
 	st += '<div id="session" style="display: none;">'+_st(info.session)+'</div>'
 	st += '<div id="cookies" style="display: none;">'+_st(info.cookies)+'</div>'
 	st += '<div id="server"  style="display: none;">'+_st(info.server)+'</div>'
+	st += '<div id="sql"     style="display: none;">'+_sql(info.sql)+'</div>'
 	st += '</section>'
 
 	div.innerHTML = st
@@ -88,5 +100,7 @@
 			e.style.display = 'block'
 			return false
 	}
+	if (openTab)
+	div.querySelector('.debugbar [href="'+openTab+'"]').click()
 })()
 </script>

@@ -6,17 +6,19 @@
  */
 namespace db;
 
-class MysqlTable implements AbstractDb
+class TableSQL implements AbstractDb
 {
 	private $tableName = '';
 
-	public function __construct($base, $tableName, $user=NULL, $pass=NULL, $host=NULL)
+	public function __construct(string $tableName, array $params = [])
 	{
 		$this->tableName = $tableName;
-		if (!is_null($x=$base)) mysql::$base = $x;
-		if (!is_null($x=$user)) mysql::$user = $x;
-		if (!is_null($x=$pass)) mysql::$pass = $x;
-		if (!is_null($x=$host)) mysql::$host = $x;
+	}
+	public function create(array $fields)
+	{
+		$sql = mysql::prepare('INSERT INTO `?p` SET ?kv', $this->tableName, @$fields);
+		if (!mysql::query($sql)) return NULL;
+		return $fields + ['id' => mysql::getLastInsertId()];
 	}
 	public function search(array $filter, array $params=[]) : array
 	{

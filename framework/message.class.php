@@ -7,6 +7,7 @@ class message
 	{
 		self::$list[] = ['class'=>'error', 'text'=>$st, 'type'=>$type];
 		session::set('messages', self::$list);
+		return false;
 	}
 	public static function show($type = '')
 	{

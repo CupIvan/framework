@@ -8,7 +8,7 @@ class auth
 {
 	public static function is_login()
 	{
-		return session::get('auth', false);
+		return self::get() ? true : false;
 	}
 	public static function login($user = true)
 	{
@@ -17,6 +17,10 @@ class auth
 	public static function logout()
 	{
 		session::set('auth', NULL);
+	}
+	public static function get()
+	{
+		return session::get('auth');
 	}
 	public static function register()
 	{

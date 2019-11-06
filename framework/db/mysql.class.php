@@ -19,10 +19,9 @@ class mysql
 
 	public static function getList(string $sql) : array
 	{
-		self::$history[] = $sql;
 		$res = [];
 		$q = self::query($sql);
-		if (!$q) { self::fire('query_error', $sql); return []; }
+		if (!$q) return [];
 		while ($row = mysqli_fetch_assoc($q))
 			$res[] = $row;
 		return $res;
@@ -30,10 +29,8 @@ class mysql
 
 	public static function getItem(string $sql) : array
 	{
-		self::$history[] = $sql;
-		$res = [];
 		$q = self::query($sql);
-		if (!$q) { self::fire('query_error', $sql); return []; }
+		if (!$q) return false;
 		return mysqli_fetch_assoc($q);
 	}
 
@@ -63,7 +60,7 @@ class mysql
 				case 'kv':
 					$st = '';
 					foreach ($value as $k => $v)
-						$st .= "`$k` = ".'"'.str_replace('"', '\\"', $v).'"';
+						$st .= ($st?', ':'')."`$k` = ".'"'.str_replace('"', '\\"', $v).'"';
 					return $st;
 			}
 			return NULL;
@@ -88,14 +85,21 @@ class mysql
 		return true;
 	}
 
-	private static function query($sql)
+	public static function query($sql)
 	{
 		if (!self::connect()) return false;
+		$t = microtime(true);
 		$res = @mysqli_query(self::$connection, $sql);
+		self::$history[] = ['sql'=>$sql, 'time'=>$t, 'duration'=>microtime(true)-$t, 'errno'=>mysqli_errno(self::$connection), 'error'=>mysqli_error(self::$connection)];
+		if (!$res) { self::fire('query_error', $sql); return false; }
 		return $res;
+	}
+
+	public static function getLastInsertId()
+	{
+		return mysqli_insert_id(self::$connection);
 	}
 }
 
 mysql::on('connect_error', function(){ die('Невозможно подключиться к базе данных!'); });
 mysql::on('db_error',      function(){ die('База данных не настроена!'); });
-mysql::on('query_error',   function($sql){ die('Ошибка в запросе!<br>'.$sql); });

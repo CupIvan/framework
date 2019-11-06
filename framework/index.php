@@ -13,6 +13,7 @@ class framework
 	static public $DIR   = 'framework';
 }
 framework::$TIME_START = microtime(true);
+if (file_exists('DEBUG')) framework::$DEBUG = true;
 
 // автозагрузчик классов
 spl_autoload_register(function($class_name)

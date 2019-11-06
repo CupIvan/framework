@@ -23,6 +23,8 @@ class debug
 		self::$info['server']   = $_SERVER;
 		self::$info['memory']   = memory_get_usage();
 		self::$info['time_end'] = microtime(true);
+		if (class_exists('db\mysql'))
+		self::$info['sql']      = db\mysql::$history;
 		if (self::$is_show) return false; else self::$is_show = true;
 		template::load('debugbar');
 	}

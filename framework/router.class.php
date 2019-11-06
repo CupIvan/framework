@@ -26,7 +26,15 @@ class router
 		{
 			$m = self::is_url($url);
 			if (is_null($m)) return false;
-			$handler($m);
+			$res = $handler($m);
+
+			if ($res === false && framework::$DEBUG)
+			{
+				message::show();
+				debug::show();
+				exit;
+			}
+
 			self::$is_search = false;
 			site::redirect();
 		}

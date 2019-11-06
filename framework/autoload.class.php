@@ -33,7 +33,9 @@ class autoload
 	/** автоподгрузка из локальной папки */
 	private static function load_local($class_name)
 	{
-		if (!file_exists($x="./framework/$class_name.class.php")) return false;
+		if (!file_exists($x="./framework/$class_name.class.php"))
+		if (!file_exists($x="./m/$class_name.class.php"))
+			return false;
 		require_once $x;
 		return true;
 	}

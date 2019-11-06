@@ -8,5 +8,6 @@ namespace db;
 
 interface AbstractDb
 {
+	public function create(array $filter);
 	public function search(array $filter, array $params=[]) : array;
 }
