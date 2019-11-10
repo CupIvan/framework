@@ -13,6 +13,12 @@ class db
 	}
 	public static function get($name)
 	{
-		return self::$db[$name] ?? new db\AbstractDb();
+		return self::$db[$name] ?? new EmptyDb();
 	}
+}
+
+class EmptyDb implements db\AbstractDb
+{
+	public function create(array $filter) { return false; }
+	public function search(array $filter, array $params=[]) : array { return []; }
 }

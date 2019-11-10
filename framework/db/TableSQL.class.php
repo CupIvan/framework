@@ -8,7 +8,7 @@ namespace db;
 
 class TableSQL implements AbstractDb
 {
-	private $tableName = '';
+	protected $tableName = '';
 
 	public function __construct(string $tableName, array $params = [])
 	{
@@ -22,7 +22,9 @@ class TableSQL implements AbstractDb
 	}
 	public function search(array $filter, array $params=[]) : array
 	{
-		$sql = mysql::prepare('SELECT * FROM `?p` WHERE ?kv', $this->tableName, @$filter);
+		$sql  = mysql::prepare('SELECT * FROM `?p`', $this->tableName);
+		if (!empty($filter)) $sql .= mysql::prepare('WHERE ?kv', $filter);
+		if (!empty($params[$x='order'])) $sql .= mysql::prepare('ORDER BY ?p', $params['order']);
 		if (!empty($params[$x='limit'])) $sql .= mysql::prepare('LIMIT ?i', $params['limit']);
 		return mysql::getList($sql);
 	}
