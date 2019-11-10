@@ -5,17 +5,24 @@
 - использование TDD подхода
 - склейка CSS стилей
 
-Для создания сайта достаточно скачать и подключить `autoload.php`:
+# Установка
+
+```bash
+mkdir framework
+cd framework
+wget https://raw.githubusercontent.com/CupIvan/framework/master/framework/index.php
+```
+
+# Пример использования
 ```php
 <?php
-require_once 'autoload.php';
+require_once './framework/index.php';
+framework::$DEBUG = true;
 
-mysql::$user = 'myuser';
-mysql::$pass = 'mypass';
+db\mysql::$user = 'myuser';
+db\mysql::$pass = 'mypass';
 
-request::post();
-
-template::load();
+site::start();
 ```
 
 # Лицензия
