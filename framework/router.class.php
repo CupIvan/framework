@@ -6,9 +6,7 @@
  */
 class router
 {
-	private static $is_search = true;
-
-	static public function start($pattern = '')
+	public static function start($pattern = '')
 	{
 		if (!is_dir($dir = 'post')) return false;
 		foreach (scandir($dir) as $fname)
@@ -16,31 +14,35 @@ class router
 		if (!$pattern || ($pattern && strpos($fname, $pattern) !== false))
 		{
 			require_once "$dir/$fname";
-			if (self::$is_search) break; // COMMENT: если где-то сработал обработчик - остальные пропускаем
 		}
 	}
-	static public function post($url, $handler)
+	public static function post($url, $handler)
 	{
-		if (request::$method == 'POST')
-		if (self::$is_search)
+		$res = self::method('POST', $url, $handler);
+
+		if ($res === false && framework::$DEBUG)
 		{
-			$m = self::is_url($url);
-			if (is_null($m)) return false;
-			$res = $handler($m);
-
-			if ($res === false && framework::$DEBUG)
-			{
-				message::show();
-				debug::show();
-				exit;
-			}
-
-			self::$is_search = false;
-			site::redirect();
+			message::show();
+			debug::show();
+			exit;
 		}
-		return false;
+
+		if (!is_null($res)) site::redirect();
 	}
-	static private function is_url($url)
+	static public function get($url, $handler)
+	{
+		self::method('GET', $url, $handler);
+	}
+	private static function method($method, $url, $handler)
+	{
+		if (request::$method != $method) return NULL;
+		if (is_null($m = self::is_url($url))) return NULL;
+
+		$res = $handler($m);
+
+		return $res;
+	}
+	private static function is_url($url)
 	{
 		return preg_match('#'.$url.'#', request::$uri, $m) ? $m : NULL;
 	}
